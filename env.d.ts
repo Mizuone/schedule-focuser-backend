@@ -3,7 +3,10 @@ declare global {
     interface ProcessEnv {
       NODE_ENV: 'development' | 'production' | 'test';
       PORT: string;
-      // Declare other environment variables here
+      PGHOST: string;
+      PGDATABASE: string;
+      PGUSER: string;
+      PGPASSWORD: string;
     }
   }
 }

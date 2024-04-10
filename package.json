@@ -2,25 +2,26 @@
   "name": "schedule-focuser-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
-  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "start": "npx tsx ./src/index.ts",
-    "dev": "npx tsx --env-file=.env --env-file=.env.development --watch src/index.ts"
+    "build": "rimraf ./dist && tsc",
+    "clean": "rimraf ./dist coverage",
+    "start": "node dist/index.js",
+    "dev": "npx tsx --env-file=.env --env-file=.env.development --watch ./src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^20.12.3",
+    "@types/node": "^20.12.6",
     "express": "^4.19.2",
     "pg": "^8.11.5",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "tsx": "^4.7.1"
+    "rimraf": "^5.0.5",
+    "tsx": "^4.7.2"
   }
 }
