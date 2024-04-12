@@ -1,29 +1,31 @@
 import express, { Express } from 'express';
 
+import { PrismaClient } from '@prisma/client';
+import { TaskRoutes } from './routes/tasks';
+
 (async function() {
+    const PORT = process.env.PORT;
     const app: Express = express();
+    const prisma = new PrismaClient();
+
+    const taskRoutes = new TaskRoutes(prisma);
+
     app.use(express.json());
 
-    const PORT = process.env.PORT;
-
-    const tasksEndpoint = '/api/tasks';
-
-    app.get('/', (req, res) => {
-        res.status(200).send('Root');
+    app.use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        next();
     });
 
-    // Tasks GET
-    app.get(tasksEndpoint, (req, res) => {
-        res.status(200).send('Tasks: GET');
-    });
+    const taskEndpoint = '/api/task';
 
-    // Tasks POST
-    app.post(tasksEndpoint, (req, res) => {
-        const { body } = req;
-
-        // communicate to postgres database and update the table with the new task information
-        // when done, send request back
-    });
+    app.get(taskEndpoint, taskRoutes.getAllTasks);
+    app.get(`${taskEndpoint}/:id`, taskRoutes.getTaskById);
+    app.post(taskEndpoint, taskRoutes.createTask);
+    app.put(`${taskEndpoint}/:id`, taskRoutes.updateTask);
+    app.delete(`${taskEndpoint}/:id`, taskRoutes.deleteTask);
 
     process.on("SIGINT", function onSigint() {
         console.info(
