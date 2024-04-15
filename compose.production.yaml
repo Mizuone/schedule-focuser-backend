@@ -4,10 +4,11 @@ services:
   server:
     build:
       context: .
+    container_name: 'schedule-focuser-backend'
     environment:
       NODE_ENV: production
       PORT: 3002
-      DATABASE_URL: postgresql://psqluser:psqlpw@localhost:5432/psqlschedulerfocuser?schema=public
+      DATABASE_URL: postgresql://psqluser:psqlpw@db:5432/psqlschedulerfocuser?schema=public
     ports:
       - 3002:3002
   db:
@@ -15,7 +16,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: db
       POSTGRES_USER: psqluser
       POSTGRES_PASSWORD: psqlpw
       POSTGRES_DB: psqlschedulerfocuser

@@ -8,6 +8,7 @@
 
 ARG NODE_VERSION=20.11.0
 ARG PNPM_VERSION=8.15.6
+ARG BUILD_ENV=production
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -58,13 +59,14 @@ RUN pnpm build
 FROM base as final
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV ${BUILD_ENV}
 
 # Run the application as a non-root user.
 USER node
 
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
+COPY prisma ./prisma
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
