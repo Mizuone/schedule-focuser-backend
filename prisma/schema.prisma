@@ -11,4 +11,7 @@ model Task {
   id String @id @default(uuid())
   title String
   duration String
+  startTime Decimal
+  endTime Decimal
+  date DateTime
 }

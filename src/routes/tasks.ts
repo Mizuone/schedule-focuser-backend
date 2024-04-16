@@ -32,8 +32,8 @@ export class TaskRoutes {
 
     createTask = async (req: TaskRequest, res: Response) => {
         try {
-            const { title, duration } = req.body;
-            const data = { title, duration };
+            const { title, duration, startTime, endTime, date } = req.body;
+            const data = { title, duration, startTime, endTime, date };
 
             const createdTask = await this._prisma.task.create({ data });
 
