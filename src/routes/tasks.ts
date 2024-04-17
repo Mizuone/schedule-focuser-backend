@@ -11,6 +11,7 @@ export class TaskRoutes {
 
     constructor(prisma: PrismaClient) {
         this._prisma = prisma;
+        this._prisma.$connect();
     }
 
     getAllTasks = async (req: Request, res: Response) => {

@@ -13,7 +13,7 @@ function buildDayDates(): DayDate[] {
     
     let dayDates: DayDate[] = [];
     
-    for (let i = 0; i < daysOfWeek; i++) {
+    for (let i = 0; i <= daysOfWeek; i++) {
         const date = new Date(currentDate);
         const dayDiff = i - currentDay;
         

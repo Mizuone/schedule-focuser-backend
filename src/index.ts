@@ -1,12 +1,19 @@
 import express, { Express } from 'express';
 
+import { Pool } from 'pg';
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { TaskRoutes } from './routes/tasks';
 
 (async function() {
     const PORT = process.env.PORT;
+    const connectionString = process.env.DATABASE_URL;
     const app: Express = express();
-    const prisma = new PrismaClient();
+
+    const pool = new Pool({ connectionString });
+    const adapter = new PrismaPg(pool);
+    const prisma = new PrismaClient({ adapter });
+    await prisma.$connect()
 
     const taskRoutes = new TaskRoutes(prisma);
 
