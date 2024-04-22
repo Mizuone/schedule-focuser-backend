@@ -11,11 +11,10 @@ export class TaskRoutes {
 
     constructor(prisma: PrismaClient) {
         this._prisma = prisma;
-        this._prisma.$connect();
     }
 
     getAllTasks = async (req: Request, res: Response) => {
-        const tasks = this._prisma.task.findMany();
+        const tasks = await this._prisma.task.findMany();
 
         res.status(200).json(tasks);
     }
@@ -31,7 +30,7 @@ export class TaskRoutes {
         }
     }
 
-    createTask = async (req: TaskRequest, res: Response) => {
+    createTask = async (req: TaskRequest, res: Response) => { // TODO Reinforce the schema here
         try {
             const { title, duration, startTime, endTime, date } = req.body;
             const data = { title, duration, startTime, endTime, date };
@@ -44,10 +43,10 @@ export class TaskRoutes {
         }
     }
 
-    updateTask = async (req: TaskRequest, res: Response) => {
+    updateTask = async (req: TaskRequest, res: Response) => { // TODO GraphQL or create a dynamic way to only up the title or any property
         try {
-            const { title, duration } = req.body;
-            const data = { title, duration };
+            const { title, duration, startTime, endTime, date } = req.body;
+            const data = { title, duration, startTime, endTime, date };
             const id = { id: req.params.id };
 
             const updatedTask = await this._prisma.task.update({ where: id, data });
