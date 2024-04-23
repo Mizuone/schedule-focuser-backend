@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  server:
+    build:
+      context: .
+    container_name: 'schedule-focuser-backend-dev'
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://psqluser:psqlpw@db:5432/psqlschedulerfocuser?schema=public
+    ports:
+      - 3001:3001
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: psqluser
+      POSTGRES_PASSWORD: psqlpw
+      POSTGRES_DB: psqlschedulerfocuser
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
+
