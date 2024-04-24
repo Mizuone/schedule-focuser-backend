@@ -30,7 +30,7 @@ export class TaskRoutes {
         }
     }
 
-    createTask = async (req: TaskRequest, res: Response) => { // TODO Reinforce the schema here
+    createTask = async (req: TaskRequest, res: Response) => {
         try {
             const { title, duration, startTime, endTime, date } = req.body;
             const data = { title, duration, startTime, endTime, date };
@@ -43,7 +43,7 @@ export class TaskRoutes {
         }
     }
 
-    updateTask = async (req: TaskRequest, res: Response) => { // TODO GraphQL or create a dynamic way to only up the title or any property
+    updateTask = async (req: TaskRequest, res: Response) => {
         try {
             const { title, duration, startTime, endTime, date } = req.body;
             const data = { title, duration, startTime, endTime, date };
