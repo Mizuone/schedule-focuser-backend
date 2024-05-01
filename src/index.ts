@@ -11,7 +11,7 @@ import { schema } from './schema';
     // const app: Express = express();
     const yoga = createYoga({
         schema
-    })
+    });
 
     await prisma.$connect()
 
