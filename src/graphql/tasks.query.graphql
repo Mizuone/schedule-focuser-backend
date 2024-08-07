@@ -1,0 +1,10 @@
+query GetTasks {
+  task {
+    title
+    startTime
+    endTime
+    id
+    duration
+    date
+  }
+}

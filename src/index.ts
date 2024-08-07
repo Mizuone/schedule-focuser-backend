@@ -1,22 +1,23 @@
 import express, { Express } from 'express';
 
-import { Pool } from 'pg';
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
 import { TaskRoutes } from './routes/tasks';
+import { createServer } from 'node:http';
+import { createYoga } from 'graphql-yoga';
+import { prisma } from './db';
+import { schema } from './schema';
 
 (async function() {
     const PORT = process.env.PORT;
-    const connectionString = process.env.DATABASE_URL;
-    const app: Express = express();
+    // const app: Express = express();
+    const yoga = createYoga({
+        schema
+    });
 
-    const pool = new Pool({ connectionString });
-    const adapter = new PrismaPg(pool);
-    const prisma = new PrismaClient({ adapter });
     await prisma.$connect()
 
-    const taskRoutes = new TaskRoutes(prisma);
+    // const taskRoutes = new TaskRoutes(prisma);
 
+    /*
     app.use(express.json());
 
     app.use((req, res, next) => {
@@ -27,12 +28,18 @@ import { TaskRoutes } from './routes/tasks';
     });
 
     const taskEndpoint = '/api/task';
-
-    app.get(taskEndpoint, taskRoutes.getAllTasks);
+    */
+    /*app.get(taskEndpoint, taskRoutes.getAllTasks);
     app.get(`${taskEndpoint}/:id`, taskRoutes.getTaskById);
     app.post(taskEndpoint, taskRoutes.createTask);
     app.put(`${taskEndpoint}/:id`, taskRoutes.updateTask);
     app.delete(`${taskEndpoint}/:id`, taskRoutes.deleteTask);
+    */
+    const server = createServer(yoga);
+
+    server.listen(PORT, () => {
+        console.log(`Port: ${PORT}, running at http://localhost:${PORT}/graphql`)
+    });
 
     process.on("SIGINT", function onSigint() {
         console.info(
@@ -48,10 +55,6 @@ import { TaskRoutes } from './routes/tasks';
             new Date().toISOString()
         );
         shutdown();
-    });
-
-    const server = app.listen(PORT, () => {
-        console.log(`Port: ${PORT}`)
     });
 
     function shutdown() {
